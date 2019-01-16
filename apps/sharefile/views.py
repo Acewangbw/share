@@ -51,7 +51,7 @@ class FileListView(View):
         allfile = AddFileModel.objects.all()
         countfile = AddFileModel.objects.count()
 
-        user_obj = UserProfile.objects.get(username=username)
+        # user_obj = UserProfile.objects.get(username=username)
 
 
 
