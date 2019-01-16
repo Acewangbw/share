@@ -2,7 +2,6 @@
 _author_ = 'Ace'
 _date_ = '2019-01-16 9:40'
 
-from users.models.Department import Department
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 

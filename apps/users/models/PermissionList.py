@@ -4,7 +4,7 @@ from django.db import models
 _author_ = 'Ace'
 _date_ = '2019-01-16 9:58'
 
-#添加权限
+#3添加权限
 class PermissionList(models.Model):
     # get  获取用户信息1
     # post  创建用户2
@@ -16,4 +16,4 @@ class PermissionList(models.Model):
     class Meta:
         verbose_name_plural = '操作表'
     def __str__(self):
-        return self.name
+        return "%s-%s" % (self.name, self.code)

@@ -1,8 +1,15 @@
 # _*_ coding: utf-8 _*_
+from django.contrib.auth import login, authenticate
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 # 基于类实现需要继承的view
+from django.urls import reverse
 from django.views.generic.base import View
+
+from users.forms import LoginForm
+
+from users.models import Permission
 
 
 class LoginView(View):
@@ -58,3 +65,6 @@ class LoginView(View):
             return render(
                 request, "login.html", {
                     "login_form": login_form})
+
+
+        permissionlist =  Permission.objects.filter(user__r__user2role__in=role_list).values('U2R__code','U2R__name').distinct()

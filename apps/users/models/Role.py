@@ -5,10 +5,11 @@ from users.models.Department import Department
 _author_ = 'Ace'
 _date_ = '2019-01-16 9:50'
 
+# 2
 class Role(models.Model):
-    role = models.ForeignKey(Department,on_delete=models.CASCADE)
+    department_role = models.ForeignKey(Department,on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     class Meta:
-        verbose_name_plural = '角色表'
+        verbose_name_plural = u'角色表'
     def __str__(self):
-        return self.name
+        return "%s-%s" % (self.department_role.Department_name, self.name)

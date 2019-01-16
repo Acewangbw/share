@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic.base import View
-from users.models import Department
+from users.models import Department, User2Role, Permission, UserProfile
 from .models import AddFileModel,FileUsedfor
 from .forms import AddfileForms
 from datetime import datetime
@@ -50,6 +50,11 @@ class FileListView(View):
     def get(self,request):
         allfile = AddFileModel.objects.all()
         countfile = AddFileModel.objects.count()
+
+        user_obj = UserProfile.objects.get(username=username)
+
+
+
         return render(request,'Ace-filelist-transaction-listing.html',{
             'allfile':allfile,
             'countfile':countfile

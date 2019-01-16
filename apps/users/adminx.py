@@ -1,4 +1,6 @@
 # _*_ coding: utf-8 _*_
+from users.models import Department, Role, Permission, User2Role, PermissionList
+
 _author_ = 'Ace'
 _date_ = '2018/11/29 12:40'
 
@@ -79,20 +81,67 @@ xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)
 
 
-# 注册部门
-xadmin.site.register(models.Department)
+
 #创建权限列表
 #注册权限
-xadmin.site.register(models.Role)
-#注册用户到角色分配
-xadmin.site.register(models.User2Role)
-#注册添加权限
-xadmin.site.register(models.PermissionList)
+# xadmin.site.register(models.Role)
+
+
 # 添加权限
-xadmin.site.register(models.Permission)
+
+class DepartmentAdmin(object):
+    # 配置后台我们需要显示的列
+    list_display = ['user','Department_name']
+    # 配置搜索字段,不做时间搜索
+    search_fields = ['user','Department_name']
+    # 配置筛选字段
+    list_filter = ['user','Department_name']
+xadmin.site.register(Department,DepartmentAdmin)
 
 
 
+#注册权限
+class RoleAdmin(object):
+    # 配置后台我们需要显示的列
+    list_display = ['department_role','name']
+    # 配置搜索字段,不做时间搜索
+    search_fields = ['department_role','name']
+    # 配置筛选字段
+    list_filter = ['department_role','name']
+xadmin.site.register(Role,RoleAdmin)
+
+#注册用户到角色分配
+class PermissionAdmin(object):
+    # 配置后台我们需要显示的列
+    list_display = ['user','U2R']
+    # 配置搜索字段,不做时间搜索
+    search_fields = ['user','U2R']
+    # 配置筛选字段
+    list_filter = ['user','U2R']
+xadmin.site.register(Permission,PermissionAdmin)
+
+
+
+#User2Role
+class User2RoleAdmin(object):
+    # 配置后台我们需要显示的列
+    list_display = ['u','r']
+    # 配置搜索字段,不做时间搜索
+    search_fields = ['u','r']
+    # 配置筛选字段
+    list_filter = ['u','r']
+xadmin.site.register(User2Role,User2RoleAdmin)
+
+
+#注册添加权限
+class PermissionListAdmin(object):
+    # 配置后台我们需要显示的列
+    list_display = ['name','code']
+    # 配置搜索字段,不做时间搜索
+    search_fields = ['name','code']
+    # 配置筛选字段
+    list_filter = ['name','code']
+xadmin.site.register(PermissionList,PermissionListAdmin)
 
 
 
