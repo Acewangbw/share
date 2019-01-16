@@ -13,29 +13,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include, re_path
-import xadmin
-
-from users.views import user_login,LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView,LogoutView
-from django.views.generic import TemplateView
-
 # 用于设定图片URL地址
 from django.views.static import serve
-#配件添加图片URL时用到的
+
+import xadmin
+# 配件添加图片URL时用到的
+from apps.users.views.ActiveUserView import ActiveUserView
+from apps.users.views.ForgetPwdView import ForgetPwdView
+from apps.users.views.Index import Index
+from apps.users.views.LoginView import LoginView
+from apps.users.views.LogoutView import LogoutView
+from apps.users.views.ModifyPwdView import ModifyPwdView
+from apps.users.views.RegisterView import RegisterView
+from apps.users.views.ResetView import ResetView
 from .settings import MEDIA_ROOT
+
+# from users.views import user_login,LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView,LogoutView
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     # 基于类方法实现登录,这里是调用它的方法
     # path('', LoginView.as_view(), name="login"),
-    path('index/',TemplateView.as_view(template_name="index.html"),name="index"),
+    # path('index/',TemplateView.as_view(''),name="index"),
+    path('index/', Index.as_view(), name="index"),
     path('login/', LoginView.as_view(), name="login"),
     path('register/', RegisterView.as_view(), name="register"),
     # 验证码url
     path("captcha/", include('captcha.urls')),
     # 激活用户url
-    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name= "user_active"),
+    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name="user_active"),
 
     # 忘记密码
     path('forget/', ForgetPwdView.as_view(), name="forget_pwd"),
@@ -50,6 +57,6 @@ urlpatterns = [
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT， 其中document_root是一个固定写法。
     re_path('media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
-    path('logout/', LogoutView.as_view(),name='logout')
+    path('logout/', LogoutView.as_view(), name='logout')
 
 ]

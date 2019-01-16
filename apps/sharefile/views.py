@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic.base import View
-from operation.models import FileDepartment,FileUsedfor
-from .models import AddFileModel
+from users.models import Department
+from .models import AddFileModel,FileUsedfor
 from .forms import AddfileForms
 from datetime import datetime
 
@@ -12,7 +12,7 @@ from .cunt import change_info
 
 class AddfileView(View):
     def get(self,request):
-        dept = FileDepartment.objects.all()
+        dept = Department.objects.all()
         usedfor = FileUsedfor.objects.all()
 
         return render(request,'Ace-file-add-realestate-add-property.html',{
@@ -27,7 +27,7 @@ class AddfileView(View):
 
         if addfile_form.is_valid():
             file_profile.models_Filename = request.POST.get("filename", "")
-            file_profile.models_Filedepartment = request.POST.get("filedepartment", "")
+            file_profile.models_Department = request.POST.get("Department", "")
             file_profile.models_Filedes = request.POST.get("filedes", "")
             file_profile.models_Fileusedfor = request.POST.get("fileusedfor", "")
 
@@ -43,11 +43,6 @@ class AddfileView(View):
 
         else:
             return render(request, 'Ace-file-add-realestate-add-property.html')
-
-class DashboardView(View):
-    def get(self,request):
-        allfile = AddFileModel.objects.all()
-        return render(request,'Ace-dashboard-table-basic.html',{'allfile':allfile})
 
 
 # status = ''
