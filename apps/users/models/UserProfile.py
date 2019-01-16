@@ -1,6 +1,5 @@
 # _*_ coding: utf-8 _*_
-_author_ = 'Ace'
-_date_ = '2019-01-16 9:40'
+from django.contrib.auth.base_user import AbstractBaseUser
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -10,6 +9,7 @@ from django.db import models
 class UserProfile(AbstractUser):
     # username = models.CharField(max_length=50, verbose_name=u"用户名")
     # password = models.CharField(max_length=50, verbose_name=u"密码")
+    # user_email = models.CharField(max_length=50, verbose_name=u"邮箱")
 
     # 自定义的性别选择规则
     GENDER_CHOICES = (

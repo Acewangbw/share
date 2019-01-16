@@ -67,4 +67,3 @@ class LoginView(View):
                     "login_form": login_form})
 
 
-        permissionlist =  Permission.objects.filter(user__r__user2role__in=role_list).values('U2R__code','U2R__name').distinct()

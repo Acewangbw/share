@@ -11,7 +11,7 @@ _date_ = '2019-01-16 11:54'
 from django.views.generic.base import View
 
 
-
+# 之前搬别人的权限判断
 class MenuHelper(object):
 
     def __init__(self,request,username):
