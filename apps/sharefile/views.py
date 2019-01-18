@@ -1,18 +1,26 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic.base import View
-from users.models import Department, User2Role, Permission, UserProfile
+from users.models import User2Role, Permission, UserProfile
 from .models import AddFileModel,FileUsedfor
 from .forms import AddfileForms
 from datetime import datetime
+from users.models.Dep import Dep
 
 from django.shortcuts import render_to_response
 
 from .cunt import change_info
 # Create your views here.
 
-class AddfileView(View):
+from utils.mixin_utils import LoginRequiredMixin
+
+
+
+class AddfileView(LoginRequiredMixin,View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
     def get(self,request):
-        dept = Department.objects.all()
+        dept = Dep.objects.all()
         usedfor = FileUsedfor.objects.all()
 
         return render(request,'Ace-file-add-realestate-add-property.html',{
@@ -27,9 +35,10 @@ class AddfileView(View):
 
         if addfile_form.is_valid():
             file_profile.models_Filename = request.POST.get("filename", "")
-            file_profile.models_Department = request.POST.get("Department", "")
+            file_profile.models_Filedepartment = request.POST.get("filedepartment", "")
             file_profile.models_Filedes = request.POST.get("filedes", "")
             file_profile.models_Fileusedfor = request.POST.get("fileusedfor", "")
+
 
             if 'fileupload' in list(request.FILES.keys()):
                 file_profile.models_Fileupload = request.FILES['fileupload']
@@ -46,14 +55,29 @@ class AddfileView(View):
 
 
 # status = ''
-class FileListView(View):
+class FileListView(LoginRequiredMixin,View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
     def get(self,request):
-        allfile = AddFileModel.objects.all()
-        countfile = AddFileModel.objects.count()
+        #从session获取用户信息
+        user = request.session.get("user")
+        user_name = user.get("user_name")
+        #查询对应用户信息
+        user_obj = UserProfile.objects.filter(email=user_name)[0]
+        #部门id
+        dep_id = user_obj.department_id
+        dep_name = user_obj.department.Department_name
+        #查询部门对应的文件
+        allfile = AddFileModel.objects.filter(models_Filedepartment=dep_name)
+        # allfile = AddFileModel.objects.filter(department_id=dep_id)
+        print("8"*10)
+        print(allfile)
+        #allfile = AddFileModel.objects.all()
+       # countfile = AddFileModel.objects.count()
+        countfile = len(allfile)
 
         # user_obj = UserProfile.objects.get(username=username)
-
-
 
         return render(request,'Ace-filelist-transaction-listing.html',{
             'allfile':allfile,

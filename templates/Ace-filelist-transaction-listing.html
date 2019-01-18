@@ -344,7 +344,12 @@
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-bar-chart-alt"></i><span class="hide-menu">文件</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{% url 'sharefile:filelist' %}">文件列表</a></li>
-                                <li><a href="{% url 'sharefile:addfile' %}">文件上传</a></li>
+
+                                        {% if request.session.user.is_admin == 1 %}
+                                         <li><a href="{% url 'sharefile:addfile' %}">文件上传</a></li>
+                                        {% endif %}
+
+
 {#                                <li><a href="reports-cryto-stats.html">Crypto Stats</a></li>#}
                             </ul>
                         </li>
@@ -378,7 +383,17 @@
                                 <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
                                 <li class="breadcrumb-item active">File list </li>
                             </ol>
-                            <button type="button" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i><a href="{% url 'sharefile:addfile' %}">上传文件</a></button>
+
+
+
+{#TODO                            #}
+{#                                                                如果登录就判断是否具有权限#}
+                                  {% if request.session.user.is_admin == 1 %}
+                                      <button type="button" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i><a href="{% url 'sharefile:addfile' %}">上传文件</a></button>
+                                  {% endif %}
+
+
+
                         </div>
                     </div>
                 </div>
@@ -490,7 +505,11 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <a href="javascript:post('/sharefile/filelist/',{op:'del',file_id:'{{file.id}}'})" onclick="return p_del()">删除</a>
+{#TODO                                                            判断用户是否登录#}
+
+                                                            {% if request.session.user.is_admin == 1 %}
+                                                                <a href="javascript:post('/sharefile/filelist/',{op:'del',file_id:'{{file.id}}'})" onclick="return p_del()">删除</a>
+                                                            {% endif %}
 {#                                                            <a name="delete" href="javascript:" onclick="delete_file(this, {{ file.id }})" ><span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span>删除</a>#}
 {#                                                            <a name="delete" href="javascript:" onclick="DeleteFile(this, {{ file.id }})"><span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span></a>#}
                                                     </tr>

@@ -1,7 +1,7 @@
 # _*_ coding: utf-8 _*_
 from django.db import models
 
-from users.models import Department
+from users.models import Dep
 from users.models.UserProfile import UserProfile
 from users.models.Role import Role
 

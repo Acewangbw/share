@@ -1,5 +1,6 @@
 # _*_ coding: utf-8 _*_
-from users.models import Department, Role, Permission, User2Role, PermissionList
+from users.models import Role, Permission, User2Role, PermissionList
+from users.models.Dep import Dep
 
 _author_ = 'Ace'
 _date_ = '2018/11/29 12:40'
@@ -49,48 +50,48 @@ xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)
 
 
-class UserProfileAdmin(object):
-    # 配置后台我们需要显示的列
-    list_display = [
-                    'username',
-                    'password',
-                    'user_email',
-                    'GENDER_CHOICES',
-                    'nick_name',
-                    'birthday',
-                    'gender',
-                    'address',
-                    'mobile',
-                    'image',
-                    ]
-    # 配置搜索字段,不做时间搜索
-    search_fields = [
-                    'username',
-                    'password',
-                    'user_email',
-                    'GENDER_CHOICES',
-                    'nick_name',
-                    'birthday',
-                    'gender',
-                    'address',
-                    'mobile',
-                    'image',
-                    ]
-    # 配置筛选字段
-    list_filter = [
-                    'username',
-                    'password',
-                    'user_email',
-                    'GENDER_CHOICES',
-                    'nick_name',
-                    'birthday',
-                    'gender',
-                    'address',
-                    'mobile',
-                    'image',
-                    ]
-xadmin.site.unregister(UserProfile)
-xadmin.site.register(UserProfile, UserProfileAdmin)
+# class UserProfileAdmin(object):
+#     # 配置后台我们需要显示的列
+#     list_display = [
+#                     'username',
+#                     'password',
+#                     'user_email',
+#                     'GENDER_CHOICES',
+#                     'nick_name',
+#                     'birthday',
+#                     'gender',
+#                     'address',
+#                     'mobile',
+#                     'image',
+#                     ]
+#     # 配置搜索字段,不做时间搜索
+#     search_fields = [
+#                     'username',
+#                     'password',
+#                     'user_email',
+#                     'GENDER_CHOICES',
+#                     'nick_name',
+#                     'birthday',
+#                     'gender',
+#                     'address',
+#                     'mobile',
+#                     'image',
+#                     ]
+#     # 配置筛选字段
+#     list_filter = [
+#                     'username',
+#                     'password',
+#                     'user_email',
+#                     'GENDER_CHOICES',
+#                     'nick_name',
+#                     'birthday',
+#                     'gender',
+#                     'address',
+#                     'mobile',
+#                     'image',
+#                     ]
+# xadmin.site.unregister(UserProfile)
+# xadmin.site.register(UserProfile, UserProfileAdmin)
 
 
 #创建权限列表
@@ -100,16 +101,24 @@ xadmin.site.register(UserProfile, UserProfileAdmin)
 
 # 添加权限
 
-class DepartmentAdmin(object):
+# class DepartmentAdmin(object):
+#     # 配置后台我们需要显示的列
+#     list_display = ['user','Department_name']
+#     # 配置搜索字段,不做时间搜索
+#     search_fields = ['user','Department_name']
+#     # 配置筛选字段
+#     list_filter = ['user','Department_name']
+# xadmin.site.register(Department,DepartmentAdmin)
+
+
+class DepAdmin(object):
     # 配置后台我们需要显示的列
-    list_display = ['user','Department_name']
+    list_display = ['Department_name','add_time']
     # 配置搜索字段,不做时间搜索
-    search_fields = ['user','Department_name']
+    search_fields = ['Department_name','add_time']
     # 配置筛选字段
-    list_filter = ['user','Department_name']
-xadmin.site.register(Department,DepartmentAdmin)
-
-
+    list_filter = ['Department_name','add_time']
+xadmin.site.register(Dep,DepAdmin)
 
 #注册权限
 class RoleAdmin(object):

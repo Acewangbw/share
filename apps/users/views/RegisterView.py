@@ -26,6 +26,9 @@ class RegisterView(View):
         if register_form.is_valid():
             # 这里注册时前端的name为email
             user_name = request.POST.get("email", "")
+            print("-"*50)
+            print("user_name", user_name)
+            print("-" * 50)
             # 用户查重
             if UserProfile.objects.filter(email=user_name):
                 return render(

@@ -4,8 +4,10 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
 # 用户Profile
+from users.models.Dep import Dep
+
+
 class UserProfile(AbstractUser):
     # username = models.CharField(max_length=50, verbose_name=u"用户名")
     # password = models.CharField(max_length=50, verbose_name=u"密码")
@@ -41,6 +43,11 @@ class UserProfile(AbstractUser):
         max_length=100,
         verbose_name=u"头像"
     )
+
+    # 部门外键
+    department = models.ForeignKey(Dep, on_delete=models.CASCADE, null=True)
+    # 是否有权限 0 没有 1 有
+    is_admin = models.BooleanField(null=False, default=False)
 
     # meta信息，即后台栏目名
     class Meta:

@@ -3,8 +3,8 @@ import re
 
 from users.models.Role import Role
 from users.models.PermissionList import PermissionList
-from users.models.Department import Department
-
+# from users.models.Department import Department
+from users.models.Dep import Dep
 _author_ = 'Ace'
 _date_ = '2019-01-16 11:54'
 # 基于类实现需要继承的view
@@ -71,7 +71,7 @@ class MenuHelper(object):
 
             # 获取所有的菜单列表
             # 已修改
-            menu_list = list(Department.objects.values('id', 'caption', 'parent_id'))
+            menu_list = list(Dep.objects.values('id', 'caption', 'parent_id'))
 
             self.request.session['permission_info'] = {
                 'permission2action_dict': permission2action_dict,

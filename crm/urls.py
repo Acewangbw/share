@@ -33,6 +33,7 @@ from .settings import MEDIA_ROOT
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
+    re_path(r'^$', Index.as_view(), name="index"),
     # 基于类方法实现登录,这里是调用它的方法
     # path('', LoginView.as_view(), name="login"),
     # path('index/',TemplateView.as_view(''),name="index"),
