@@ -13,3 +13,4 @@ from users.views.MenuHelper import MenuHelper
 from users.views.ModifyPwdView import ModifyPwdView
 from users.views.RegisterView import RegisterView
 from users.views.ResetView import ResetView
+from users.views.ProfileView import ProfileView

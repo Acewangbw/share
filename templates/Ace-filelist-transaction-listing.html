@@ -1,619 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 {% load staticfiles %}
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
-    <title>Elite Admin Template - The Ultimate Multipurpose admin template</title>
-    <!-- Custom CSS -->
-    <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
-    <!-- This Page CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/pages/widget-page.css' %}">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-</head>
+{% block bread %}文件列表{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="text-light font-medium m-t-10">共有文件<i class="fa fa-angle-up font-bold"></i></h5>
+                    <h3 class="m-t-0 text-light font-medium">{{ countfile }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-purple">
+                <div class="card-body">
+                    <h5 class="text-light font-medium m-t-10">总下载量<i class="fa fa-angle-down font-bold"></i></h5>
+                    <h3 class="m-t-0 text-light font-medium">6153</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info">
+                <div class="card-body">
+                    <h5 class="text-light font-medium m-t-10">当天上传文件<i class="fa fa-angle-up font-bold"></i></h5>
+                    <h3 class="m-t-0 text-light font-medium">16</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark">
+                <div class="card-body">
+                    <h5 class="text-light font-medium m-t-10">当天下载数量<i class="fa fa-angle-down font-bold"></i></h5>
+                    <h3 class="m-t-0 text-light font-medium">15</h3>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <h3 class="card-title">文件下载</h3>
+        {#                                            <div class="ml-auto">#}
+        {#                                                <button type="button" class="btn btn-info">View All</button>#}
+        {#                                            </div>#}
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <div class="blocks-table txn-table" >
+                                <table class="table table-padded m-b-0">
+                                    <thead>
+                                        <tr class="header">
+                                            <th>
+                                                <div>文件</div>
+                                            </th>
+                                            <th class="hidden-xs">
+                                                <div class=" hidden-xs">下载次数</div>
+                                            </th>
+                                            <th class="hidden-xs">
+                                                <div class=" hidden-xs">上传者</div>
+                                            </th>
+                                            <th>
+                                                <div>用于</div>
+                                            </th>
+                                            <th>&nbsp;
+                                                <div>操作</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for file in allfile %}
+                                        <tr id={{ file.id }}>
+                                            <td>
+                                                <div class="d-flex no-block">
+                                                    <div class="text-ellipsis">
+        {#                                                                    <a onclick="countclick()" href="{{ MEDIA_URL }}{{ file.models_Fileupload }}" download="">{{ file.models_Filename }}</a>#}
+                                                        <a onclick="countclick()" href="{{ MEDIA_URL }}{{ file.models_Fileupload }}" download="">{{ file.models_Filename }}</a>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex no-block">
+                                                    <div class="d-flex no-block">
+                                                        <div class="gen-content font-medium">描述：</div>
+                                                        <div class="text-ellipsis">{{ file.models_Filedes }}</div>
+                                                    </div>
+        {#                                                                <div class="d-flex no-block">#}
+        {#                                                                    <div class="gen-content font-medium">To</div>#}
+        {#                                                                    <div class="text-ellipsis"> xd9dd3777b6c776438fd0sdg930dfdsg0</div>#}
+        {#                                                                </div>#}
+                                                </div>
+                                            </td>
+                                            <td class=" hidden-xs">
+                                                <div id="dowanload_count" class="text-success"></div>
+                                            </td>
+                                            <td class="hidden-xs">
+                                                <div>Ace</div>
+                                            </td>
+                                            <td valign="middle">
+                                                <div class="reward text-ellipsis">
+                                                    {{ file.models_Fileusedfor }}
+                                                </div>
+                                            </td>
+                                            <td>
+        {#TODO                                                            判断用户是否登录#}
 
-<body class="skin-default fixed-layout">
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="loader__figure"></div>
-            <p class="loader__label">Elite admin</p>
+                                                {% if request.session.user.is_admin == 1 %}
+                                                    <a href="javascript:post('/sharefile/filelist/',{op:'del',file_id:'{{file.id}}'})" onclick="return p_del()">删除</a>
+                                                {% endif %}
+                                            </td>
+        {#                                                            <a name="delete" href="javascript:" onclick="delete_file(this, {{ file.id }})" ><span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span>删除</a>#}
+        {#                                                            <a name="delete" href="javascript:" onclick="DeleteFile(this, {{ file.id }})"><span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span></a>#}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                {% csrf_token %}
+                                </table>
+                            </div>
+                        </div>
+        {#                                    <div class="text-center p-t-20 p-b-20">#}
+        {#                                        <ul class="list-inline font-12">#}
+        {#                                            <li class="text-success"><i class="fa fa-check text-success"></i> Success</li>#}
+        {#                                            <li class="text-danger"><i class="fa fa-times text-danger"></i> Failed</li>#}
+        {#                                        </ul>#}
+        {#                                    </div>#}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <div id="main-wrapper">
-        <!-- ============================================================== -->
-        <!-- Topbar header - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <header class="topbar">
-            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-                <!-- ============================================================== -->
-                <!-- Logo -->
-                <!-- ============================================================== -->
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">
-                        <!-- Logo icon --><b>
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <img src="{% static 'images/logo-icon.png' %}" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo icon -->
-                            <img src="{% static 'images/logo-light-icon.png' %}" alt="homepage" class="light-logo" />
-                        </b>
-                        <!--End Logo icon -->
-                        <!-- Logo text --><span>
-                         <!-- dark Logo text -->
-                         <img src="{% static 'images/logo-text.png' %}" alt="homepage" class="dark-logo" />
-                         <!-- Light Logo text -->    
-                         <img src="{% static 'images/logo-light-text.png' %}" class="light-logo" alt="homepage" /></span> </a>
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Logo -->
-                <!-- ============================================================== -->
-                <div class="navbar-collapse">
-                    <!-- ============================================================== -->
-                    <!-- toggle and nav items -->
-                    <!-- ============================================================== -->
-                    <ul class="navbar-nav mr-auto">
-                        <!-- This is  -->
-                        <li class="nav-item"> <a class="nav-link nav-toggler d-block d-md-none waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
-                        <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-lg-block d-md-block waves-effect waves-dark" href="javascript:void(0)"><i class="icon-menu"></i></a> </li>
-                        <!-- ============================================================== -->
-                        <!-- Search -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item">
-                            <form class="app-search d-none d-md-block d-lg-block">
-                                <input type="text" class="form-control" placeholder="Search & enter">
-                            </form>
-                        </li>
-                    </ul>
-                    <!-- ============================================================== -->
-                    <!-- User profile and search -->
-                    <!-- ============================================================== -->
-                    <ul class="navbar-nav my-lg-0">
-                        <!-- ============================================================== -->
-                        <!-- Comment -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti-email"></i>
-                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
-                                <ul>
-                                    <li>
-                                        <div class="drop-title">Notifications</div>
-                                    </li>
-                                    <li>
-                                        <div class="message-center">
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5>Luanch Admin</h5> <span class="mail-desc">Just see the my new admin!</span> <span class="time">9:30 AM</span> </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="btn btn-success btn-circle"><i class="ti-calendar"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5>Event today</h5> <span class="mail-desc">Just a reminder that you have event</span> <span class="time">9:10 AM</span> </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5>Settings</h5> <span class="mail-desc">You can customize this template as you want</span> <span class="time">9:08 AM</span> </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="btn btn-primary btn-circle"><i class="ti-user"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span> </div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-center link" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <!-- ============================================================== -->
-                        <!-- End Comment -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- Messages -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="icon-note"></i>
-                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
-                            </a>
-                            <div class="dropdown-menu mailbox dropdown-menu-right animated bounceInDown" aria-labelledby="2">
-                                <ul>
-                                    <li>
-                                        <div class="drop-title">You have 4 new messages</div>
-                                    </li>
-                                    <li>
-                                        <div class="message-center">
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="user-img"> <img src="{% static 'images/users/1.jpg' %}" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span> </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="user-img"> <img src="{% static 'images/users/2.jpg' %}" alt="user" class="img-circle"> <span class="profile-status busy pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span> </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="user-img"> <img src="{% static 'images/users/3.jpg' %}" alt="user" class="img-circle"> <span class="profile-status away pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span> </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)">
-                                                <div class="user-img"> <img src="{% static 'images/users/4.jpg' %}" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span> </div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-center link" href="javascript:void(0);"> <strong>See all e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <!-- ============================================================== -->
-                        <!-- End Messages -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- mega menu -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item dropdown mega-dropdown"> <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti-layout-width-default"></i></a>
-                            <div class="dropdown-menu animated bounceInDown">
-                                <ul class="mega-dropdown-menu row">
-                                    <li class="col-lg-3 col-xlg-2 m-b-30">
-                                        <h4 class="m-b-20">CAROUSEL</h4>
-                                        <!-- CAROUSEL -->
-                                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                            <div class="carousel-inner" role="listbox">
-                                                <div class="carousel-item active">
-                                                    <div class="container"> <img class="d-block img-fluid" src="{% static 'images/big/img1.jpg' %}" alt="First slide"></div>
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <div class="container"><img class="d-block img-fluid" src="{% static 'images/big/img2.jpg' %}" alt="Second slide"></div>
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <div class="container"><img class="d-block img-fluid" src="{% static 'images/big/img3.jpg' %}" alt="Third slide"></div>
-                                                </div>
-                                            </div>
-                                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a>
-                                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a>
-                                        </div>
-                                        <!-- End CAROUSEL -->
-                                    </li>
-                                    <li class="col-lg-3 m-b-30">
-                                        <h4 class="m-b-20">ACCORDION</h4>
-                                         <!-- Accordian -->
-                                        <div class="accordion" id="accordionExample">
-                                            <div class="card m-b-0">
-                                                <div class="card-header bg-white p-0" id="headingOne">
-                                                    <h5 class="mb-0">
-                                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                            Collapsible Group Item #1
-                                                        </button>
-                                                    </h5>
-                                                </div>
+{% endblock %}
 
-                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                    <div class="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card m-b-0">
-                                                <div class="card-header bg-white p-0" id="headingTwo">
-                                                    <h5 class="mb-0">
-                                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                                                            aria-controls="collapseTwo">
-                                                            Collapsible Group Item #2
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                                    <div class="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card m-b-0">
-                                                <div class="card-header bg-white p-0" id="headingThree">
-                                                    <h5 class="mb-0">
-                                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
-                                                            aria-controls="collapseThree">
-                                                            Collapsible Group Item #3
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                                    <div class="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-lg-3  m-b-30">
-                                        <h4 class="m-b-20">CONTACT US</h4>
-                                        <!-- Contact -->
-                                        <form>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="exampleInputname1" placeholder="Enter Name"> </div>
-                                            <div class="form-group">
-                                                <input type="email" class="form-control" placeholder="Enter email"> </div>
-                                            <div class="form-group">
-                                                <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Message"></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-info">Submit</button>
-                                        </form>
-                                    </li>
-                                    <li class="col-lg-3 col-xlg-4 m-b-30">
-                                        <h4 class="m-b-20">List style</h4>
-                                        <!-- List style -->
-                                        <ul class="list-style-none">
-                                            <li><a href="javascript:void(0)"><i class="fa fa-check text-success"></i> You can give link</a></li>
-                                            <li><a href="javascript:void(0)"><i class="fa fa-check text-success"></i> Give link</a></li>
-                                            <li><a href="javascript:void(0)"><i class="fa fa-check text-success"></i> Another Give link</a></li>
-                                            <li><a href="javascript:void(0)"><i class="fa fa-check text-success"></i> Forth link</a></li>
-                                            <li><a href="javascript:void(0)"><i class="fa fa-check text-success"></i> Another fifth link</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <!-- ============================================================== -->
-                        <!-- End mega menu -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item right-side-toggle"> <a class="nav-link  waves-effect waves-light" href="javascript:void(0)"><i class="ti-settings"></i></a></li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <!-- ============================================================== -->
-        <!-- End Topbar header -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <aside class="left-sidebar">
-            <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-                <!-- User Profile-->
-                <div class="user-profile">
-                    <div class="user-pro-body">
-                        <div><img src="{% static 'images/users/2.jpg' %}" alt="user-img" class="img-circle"></div>
-                        <div class="dropdown">
-                            <a href="javascript:void(0)" class="dropdown-toggle u-dropdown link hide-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Steave Gection <span class="caret"></span></a>
-                            <div class="dropdown-menu animated flipInY">
-                                <!-- text-->
-                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i>个人中心</a>
-{#                                <!-- text-->#}
-{#                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>#}
-{#                                <!-- text-->#}
-{#                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-email"></i> Inbox</a>#}
-{#                                <!-- text-->#}
-{#                                <div class="dropdown-divider"></div>#}
-{#                                <!-- text-->#}
-{#                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>#}
-{#                                <!-- text-->#}
-                                <div class="dropdown-divider"></div>
-                                <!-- text-->
-                                <a href="{% url 'logout' %}" class="dropdown-item"><i class="fa fa-power-off"></i>登出</a>
-                                <!-- text-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
-                        <li class="nav-small-cap">--- 个人信息</li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-speedometer"></i><span class="hide-menu">展示</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{% url 'index' %}">主页</a></li>
-{#                                <li><a href="index2.html">Trading</a></li>#}
-                            </ul>
-                        </li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-bar-chart-alt"></i><span class="hide-menu">文件</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{% url 'sharefile:filelist' %}">文件列表</a></li>
-
-                                        {% if request.session.user.is_admin == 1 %}
-                                         <li><a href="{% url 'sharefile:addfile' %}">文件上传</a></li>
-                                        {% endif %}
-
-
-{#                                <li><a href="reports-cryto-stats.html">Crypto Stats</a></li>#}
-                            </ul>
-                        </li>
-                       </ul>
-                </nav>
-                <!-- End Sidebar navigation -->
-            </div>
-            <!-- End Sidebar scroll-->
-        </aside>
-        <!-- ============================================================== -->
-        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Page wrapper  -->
-        <!-- ============================================================== -->
-        <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
-                <div class="row page-titles">
-                    <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor">文件列表</h4>
-                    </div>
-                    <div class="col-md-7 align-self-center text-right">
-                        <div class="d-flex justify-content-end align-items-center">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                                <li class="breadcrumb-item active">File list </li>
-                            </ol>
-
-
-
-{#TODO                            #}
-{#                                                                如果登录就判断是否具有权限#}
-                                  {% if request.session.user.is_admin == 1 %}
-                                      <button type="button" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i><a href="{% url 'sharefile:addfile' %}">上传文件</a></button>
-                                  {% endif %}
-
-
-
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card bg-primary">
-                            <div class="card-body">
-                                <h5 class="text-light font-medium m-t-10">共有文件<i class="fa fa-angle-up font-bold"></i></h5>
-                                <h3 class="m-t-0 text-light font-medium">{{ countfile }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-purple">
-                            <div class="card-body">
-                                <h5 class="text-light font-medium m-t-10">总下载量<i class="fa fa-angle-down font-bold"></i></h5>
-                                <h3 class="m-t-0 text-light font-medium">6153</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-info">
-                            <div class="card-body">
-                                <h5 class="text-light font-medium m-t-10">当天上传文件<i class="fa fa-angle-up font-bold"></i></h5>
-                                <h3 class="m-t-0 text-light font-medium">16</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-dark">
-                            <div class="card-body">
-                                <h5 class="text-light font-medium m-t-10">当天下载数量<i class="fa fa-angle-down font-bold"></i></h5>
-                                <h3 class="m-t-0 text-light font-medium">15</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <h3 class="card-title">文件下载</h3>
-{#                                            <div class="ml-auto">#}
-{#                                                <button type="button" class="btn btn-info">View All</button>#}
-{#                                            </div>#}
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <div class="blocks-table txn-table" >
-                                            <table class="table table-padded m-b-0">
-                                                <thead>
-                                                    <tr class="header">
-                                                        <th>
-                                                            <div>文件</div>
-                                                        </th>
-                                                        <th class="hidden-xs">
-                                                            <div class=" hidden-xs">下载次数</div>
-                                                        </th>
-                                                        <th class="hidden-xs">
-                                                            <div class=" hidden-xs">上传者</div>
-                                                        </th>
-                                                        <th>
-                                                            <div>用于</div>
-                                                        </th>
-                                                        <th>&nbsp;
-                                                            <div>操作</div>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for file in allfile %}
-                                                    <tr id={{ file.id }}>
-                                                        <td>
-                                                            <div class="d-flex no-block">
-                                                                <div class="text-ellipsis">
-{#                                                                    <a onclick="countclick()" href="{{ MEDIA_URL }}{{ file.models_Fileupload }}" download="">{{ file.models_Filename }}</a>#}
-                                                                    <a onclick="countclick()" href="{{ MEDIA_URL }}{{ file.models_Fileupload }}" download="">{{ file.models_Filename }}</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-flex no-block">
-                                                                <div class="d-flex no-block">
-                                                                    <div class="gen-content font-medium">描述：</div>
-                                                                    <div class="text-ellipsis">{{ file.models_Filedes }}</div>
-                                                                </div>
-{#                                                                <div class="d-flex no-block">#}
-{#                                                                    <div class="gen-content font-medium">To</div>#}
-{#                                                                    <div class="text-ellipsis"> xd9dd3777b6c776438fd0sdg930dfdsg0</div>#}
-{#                                                                </div>#}
-                                                            </div>
-                                                        </td>
-                                                        <td class=" hidden-xs">
-                                                            <div id="dowanload_count" class="text-success"></div>
-                                                        </td>
-                                                        <td class="hidden-xs">
-                                                            <div>Ace</div>
-                                                        </td>
-                                                        <td valign="middle">
-                                                            <div class="reward text-ellipsis">
-                                                                {{ file.models_Fileusedfor }}
-                                                            </div>
-                                                        </td>
-                                                        <td>
-{#TODO                                                            判断用户是否登录#}
-
-                                                            {% if request.session.user.is_admin == 1 %}
-                                                                <a href="javascript:post('/sharefile/filelist/',{op:'del',file_id:'{{file.id}}'})" onclick="return p_del()">删除</a>
-                                                            {% endif %}
-{#                                                            <a name="delete" href="javascript:" onclick="delete_file(this, {{ file.id }})" ><span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span>删除</a>#}
-{#                                                            <a name="delete" href="javascript:" onclick="DeleteFile(this, {{ file.id }})"><span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span></a>#}
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            {% csrf_token %}
-                                            </table>
-                                        </div>
-                                    </div>
-{#                                    <div class="text-center p-t-20 p-b-20">#}
-{#                                        <ul class="list-inline font-12">#}
-{#                                            <li class="text-success"><i class="fa fa-check text-success"></i> Success</li>#}
-{#                                            <li class="text-danger"><i class="fa fa-times text-danger"></i> Failed</li>#}
-{#                                        </ul>#}
-{#                                    </div>#}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <div class="right-sidebar">
-                    <div class="slimscrollright">
-                        <div class="rpanel-title"> Service Panel <span><i class="ti-close right-side-toggle"></i></span> </div>
-                        <div class="r-panel-body">
-                            <ul id="themecolors" class="m-t-20">
-                                <li><b>With Light sidebar</b></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-default" class="default-theme working">1</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-green" class="green-theme">2</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-red" class="red-theme">3</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-blue" class="blue-theme">4</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-purple" class="purple-theme">5</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-megna" class="megna-theme">6</a></li>
-                                <li class="d-block m-t-30"><b>With Dark sidebar</b></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-default-dark" class="default-dark-theme ">7</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-green-dark" class="green-dark-theme">8</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-red-dark" class="red-dark-theme">9</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-blue-dark" class="blue-dark-theme">10</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-purple-dark" class="purple-dark-theme">11</a></li>
-                                <li><a href="javascript:void(0)" data-skin="skin-megna-dark" class="megna-dark-theme ">12</a></li>
-                            </ul>
-                            <ul class="m-t-20 chatonline">
-                                <li><b>Chat option</b></li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/1.jpg' %}" alt="user-img" class="img-circle"> <span>Varun Dhavan <small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/2.jpg' %}" alt="user-img" class="img-circle"> <span>Genelia Deshmukh <small class="text-warning">Away</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/3.jpg' %}" alt="user-img" class="img-circle"> <span>Ritesh Deshmukh <small class="text-danger">Busy</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/4.jpg' %}" alt="user-img" class="img-circle"> <span>Arijit Sinh <small class="text-muted">Offline</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/5.jpg' %}" alt="user-img" class="img-circle"> <span>Govinda Star <small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/6.jpg' %}" alt="user-img" class="img-circle"> <span>John Abraham<small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/7.jpg' %}" alt="user-img" class="img-circle"> <span>Hritik Roshan<small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="{% static 'images/users/8.jpg' %}" alt="user-img" class="img-circle"> <span>Pwandeep rajan <small class="text-success">online</small></span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer">
-            © 2018 Eliteadmin by themedesigner.in
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
+{% block custom_js %}
     <script src="{% static 'node_modules/jquery/jquery-3.2.1.min.js' %}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{% static 'node_modules/popper/popper.min.js' %}"></script>
@@ -629,44 +148,10 @@
     <script src="{% static 'node_modules/sparkline/jquery.sparkline.min.js' %}"></script>
     <!--Custom JavaScript -->
     <script src="{% static 'js/custom.min.js' %}"></script>
+    <!-- jQuery peity -->
+    <script src="{% static 'node_modules/peity/jquery.peity.min.js' %}"></script>
+    <script src="{% static 'node_modules/peity/jquery.peity.init.js' %}"></script>
 
-
-{#删除的Ajax#}
-{##}
-{#    <script type="text/javascript" src='{% static "js/jquery.js" %}'></script>#}
-{#    <script type="text/javascript" src="{% static 'js/layer.js'%}"></script>#}
-{##}
-{#    <script type="text/javascript">#}
-{#        function delete_file(the, file_id){#}
-{#            var file_name = $(the).parents("tr").children("td").eq(1).text();#}
-{#                layer.open({#}
-{#                type: 1,#}
-{#                skin: "layui-layer-rim",#}
-{#                area: ["400px", "200px"],#}
-{#                title: "删除",#}
-                {#content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除<'+file_name+'></p></div>',#}
-{#                btn:['确定', '取消'],#}
-{#                yes: function(){#}
-{#                $.ajax({#}
-{#                    url: '{% url "sharefile:delete_file" %}',#}
-{#                    type:"POST",#}
-{#                    data: {"file_id":file_id},#}
-{#                    success: function(e){#}
-{#                    if(e=='1'){#}
-{#                        parent.location.reload();#}
-{#                        layer.msg("删除成功");#}
-{#                    }else{#}
-{#                        layer.msg("删除失败");#}
-{#                    }#}
-{##}
-{#                    },#}
-{##}
-{#                })#}
-{#                },#}
-{#            });#}
-{#            }#}
-{#    </script>#}
-{#    计算下载#}
     <script type="text/javascript">
             var i=0;
             function countclick()
@@ -675,8 +160,6 @@
                document.getElementById("dowanload_count").innerHTML=i+"";
             }
      </script>
-
-
     <script type="text/javascript">
             {#<script language="javascript">#}
 
@@ -692,12 +175,12 @@
         return true;}else{return false;}
         }
 
-        function delcfm() {
-                if (!confirm("确认要删除？")) {
-                    window.event.returnValue = false;
-                    return false;
-                }
-            }
+        {#function delcfm() {#}
+        {#        if (!confirm("确认要删除？")) {#}
+        {#            window.event.returnValue = false;#}
+        {#            return false;#}
+        {#        }#}
+        {#    }#}
 
         function post(url, params) {
             var temp = document.createElement("form"); //创建form表单
@@ -720,8 +203,6 @@
             }
 
     </script>
+{% endblock %}
 
 
-</body>
-
-</html>

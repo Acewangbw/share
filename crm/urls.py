@@ -55,9 +55,14 @@ urlpatterns = [
     # sharefile的URL
     path("sharefile/", include('sharefile.urls', namespace='sharefile')),
 
+    # users的URL
+    path("users/", include('users.urls', namespace='users')),
+
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT， 其中document_root是一个固定写法。
     re_path('media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
-    path('logout/', LogoutView.as_view(), name='logout')
+    path('logout/', LogoutView.as_view(), name='logout'),
+
+    # path('profile/',ProfileView.as_view(),name='profile'),
 
 ]

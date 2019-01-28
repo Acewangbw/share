@@ -2,12 +2,12 @@
 _author_ = 'Ace'
 _date_ = '2019-01-08 10:16'
 
-from .views import AddfileView,FileListView,ButtonsView,EditView,WheelView,CountDownloadView
+from sharefile.view import AddfileView,FileListView,ButtonsView,EditView,WheelView,CountDownloadView
 from django.urls import path, include, re_path
-from . import views
+# from . import views
 
 
-app_name = 'sharefile'
+app_name = 'users'
 
 
 urlpatterns = [
@@ -20,5 +20,5 @@ urlpatterns = [
         path('wheel/', WheelView.as_view(), name='wheel'),
         #删除
         # path(r'^del-file/$', views.del_file, name="del_file"),
-        path('delete_file/',views.del_file, name='delete_file'),
+        # path('delete_file/',views.del_file, name='delete_file'),
         ]
